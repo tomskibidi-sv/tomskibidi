@@ -51,8 +51,9 @@ h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 20px; }
 
 /* ========== 2. THÀNH PHẦN DÙNG CHUNG ========== */
 nav { padding: 18px 0; }
-.logo { font: 800 22px "Baloo 2", sans-serif; }
+.logo { font: 800 100px "Baloo 2", sans-serif; }
 .logo span { color: var(--coral); }
+.credits { margin: -35px 0 0; font-size: 15px; font-weight: 700; }
 
 .card {
   padding: 20px;
