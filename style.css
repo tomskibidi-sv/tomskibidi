@@ -181,7 +181,7 @@ h1 em {
 .rank { width: 28px; font: 800 22px "Baloo 2", sans-serif; }
 .face { font-size: 28px; }
 
-
+/* ========== 6. MÀN HÌNH NHỎ & GIẢM CHUYỂN ĐỘNG ========== */
 @media (max-width: 760px) {
   .hero, .steps, .qs { grid-template-columns: 1fr; }
   .duo { order: -1; }
@@ -224,9 +224,12 @@ h1 em {
   transition: width 0.4s ease;
 }
 
+/* ========== 7. THANH NHẠC NỀN (ngay trên credit ở cuối trang) ========== */
 .music {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
   margin: 40px 0 8px;
 }
 .music-tracks { display: flex; gap: 8px; }
 .music .small.on { color: #fff; background: var(--coral); }
+
+#play-board { margin-top: 32px; }
