@@ -6,9 +6,8 @@ function startQuiz() {
   if (!$("play-nick").value.trim()) { $("play-msg").textContent = "Nhập tên của bạn trước nhé!"; return; }
   Object.assign(play, { index: 0, score: 0, startedAt: Date.now() });
   
-  // Ẩn màn hình intro, kết quả, nút trang chủ và NÚT BẢNG XẾP HẠNG khi đang làm bài
+  // Ẩn màn hình intro, kết quả và nút trang chủ khi đang làm bài
   $("play-intro").hidden = $("play-result").hidden = true;
-  if ($("play-leaderboard")) $("play-leaderboard").hidden = true;
   if ($("play-home")) $("play-home").hidden = true;
 
   $("play-quiz").hidden = false;
@@ -61,7 +60,7 @@ function nextQuestion() {
   else showQuestion();
 }
 
-function finishQuiz() {
+async function finishQuiz() {
   clearInterval(play.timer);
   const ms = Date.now() - play.startedAt;
   const total = play.quiz.q.length;
@@ -71,8 +70,7 @@ function finishQuiz() {
   $("play-quiz").hidden = true;
   $("play-result").hidden = false;
 
-  // Hiển thị lại nút xem Bảng xếp hạng & Trang chủ ở màn hình kết quả
-  if ($("play-leaderboard")) $("play-leaderboard").hidden = false;
+  // Hiển thị lại nút Trang chủ ở màn hình kết quả
   if ($("play-home")) $("play-home").hidden = false;
 
   $("result-title").innerHTML = `${avatarHtml(avatar)} ${escapeHtml(nick)}: ${score}/${total} điểm, ${formatTime(ms)}`;
@@ -81,7 +79,8 @@ function finishQuiz() {
     score >= 6 ? "Hiểu nhau khá đó!" :
     score >= 3 ? "Cần tâm sự thêm nha." : "Mới quen hả trời?";
 
-  scoreStore.save(play.quizId, { nick, av: avatar, score, ms, at: Date.now() });
+  await scoreStore.save(play.quizId, { nick, av: avatar, score, ms, at: Date.now() });
+  refreshBoard();
 }
 
 // 5 ảnh có sẵn + ảnh người chơi tải lên (nếu có) + nút "+" để tải ảnh.
@@ -118,7 +117,6 @@ function bind() {
   $("play-again").onclick = () => {
     $("play-result").hidden = true;
     $("play-intro").hidden = false;
-    if ($("play-leaderboard")) $("play-leaderboard").hidden = false;
     if ($("play-home")) $("play-home").hidden = false;
   };
 
@@ -132,24 +130,28 @@ function bind() {
     $("play-create-own").onclick = () => { location.href = "index.html"; };
   }
 
-  for (const id of ["go-board-top", "go-board"]) {
-    if ($(id)) {$(id).onclick = () => { location.href = "leaderboard.html#" + play.hash; };
-    }
-  }
+}
+
+async function refreshBoard() {
+  renderBoard(await scoreStore.list(play.quizId), play.quiz.q.length);
 }
 
 async function init() {
+  const setTitle = (text) => { const el = $("play-title"); if (el) el.textContent = text; };
   bind();
   play.hash = location.hash.slice(1);
   try { play.quiz = await decodeInvite(play.hash); } catch (err) { play.quiz = null; }
 
   if (!play.quiz) {
-    $("play-title").textContent = "Link không hợp lệ hoặc đã bị cắt mất";
+    setTitle("Link không hợp lệ hoặc đã bị cắt mất");
     $("play-intro").hidden = true;
+    $("play-board").hidden = true;
     return;
   }
   play.quizId = hashText(play.hash);
-  $("play-title").textContent = `Bạn thân ${play.quiz.n} đoán đúng bao nhiêu?`;
+  setTitle(`Bạn thân ${play.quiz.n} đoán đúng bao nhiêu?`);
+  refreshBoard();
+  setInterval(refreshBoard, 15000); // cập nhật bảng xếp hạng mỗi 15 giây
 }
 
 init();
