@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tét tình bạn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav><div class="logo">tét <span>tình</span> bạn
+    <h4 class="credits">Vibecoded by: <span>B.Khanhs</span></h4></div></nav>
+
+    <main>
+      <button class="ghost" id="make-back" type="button">Về trang chủ</button>
+      <h2 id="make-title"></h2>
+      <div class="modes">
+        <button class="small on" id="mode-template" type="button">Dùng câu có sẵn</button>
+        <button class="small" id="mode-blank" type="button">Tự viết câu hỏi</button>
+      </div>
+      <p class="hint" id="make-progress" aria-live="polite"></p>
+      <div class="qs" id="make-list"></div>
+      <div class="card stack done">
+        <button id="make-submit" type="button">Tạo link</button>
+        <p class="msg" id="make-msg" aria-live="polite"></p>
+        <input id="make-link" readonly hidden aria-label="Link ">
+        <button class="small" id="make-copy" type="button" hidden>Sao chép link</button>
+      </div>
+    </main>
+
+    <footer>Làm cho vui thôi nhé 💛</footer>
+    <footer>Công ty trách nhiệm hữu hạn: 1 mình tao <br>
+      gám đốc: bảo khánh a hihi</footer>
+  </div>
+
+  <script src="common.js"></script>
+  <script src="make.js"></script>
+  <script src="music.js"></script>
+</body>
+</html>

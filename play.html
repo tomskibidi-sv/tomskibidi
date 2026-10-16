@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tét tình bạn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav><div class="logo">tét <span>tình</span> bạn
+    <h4 class="credits">Vibecoded by: <span>B.Khanhs</span></h4></div></nav>
+
+    <main>
+      <!-- Nút quay về trang chủ ở bên trên trái -->
+      <button class="ghost" id="play-home" type="button">‹ Trang chủ</button>
+
+      <div class="card stack" id="play-intro">
+        <label>nhập tên
+          <input id="play-nick" maxlength="16" placeholder="Biệt danh" autocomplete="off">
+        </label>
+        <p class="hint">Chọn avatar, hoặc bấm dấu + để tải lên ảnh</p>
+        <div class="avatars" id="play-avatars"></div>
+        <button id="play-start" type="button">Bắt đầu làm bài</button>
+        <p class="msg" id="play-msg" aria-live="polite"></p>
+      </div>
+      <p></p>
+      <div class="leaderboard" id="play-leaderboard">
+        <button id="go-board-top" type="button">Xem bảng xếp hạng</button>
+      </div>
+
+      <div class="card stack" id="play-quiz" hidden>
+        <p class="hint"><span id="play-count"></span> <span id="play-timer"></span></p>
+        <h3 id="play-question"></h3>
+        <img id="play-image" class="preview" hidden alt="Hình minh hoạ câu hỏi">
+        <div class="answers">
+          <button type="button" class="answer" data-i="0"></button>
+          <button type="button" class="answer" data-i="1"></button>
+        </div>
+        <p class="feedback" id="play-feedback" aria-live="polite"></p>
+        <button class="small" id="play-next" type="button" hidden>Câu tiếp</button>
+      </div>
+
+      <div class="card stack" id="play-result" hidden>
+        <h3 id="result-title"></h3>
+        <p></p>
+        <button class="small" id="play-again" type="button">Làm lại</button>
+        <button class="small" id="play-create-own" type="button">Tạo bài test của riêng bạn 🚀</button>
+      </div>
+    </main>
+    <p></p>
+    <footer>Làm cho vui thôi nhé 💛</footer>
+    <footer>Công ty trách nhiệm hữu hạn: 1 mình tao <br>
+      Giám đốc: Bảo Khánh a hihi</footer>
+  </div>
+
+
+  <script src="common.js"></script>
+  <script src="play.js"></script>
+  <script src="music.js"></script>
+</body>
+</html>

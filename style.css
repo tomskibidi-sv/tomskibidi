@@ -51,9 +51,9 @@ h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 20px; }
 
 /* ========== 2. THÀNH PHẦN DÙNG CHUNG ========== */
 nav { padding: 18px 0; }
-.logo { font: 800 80px "Baloo 2", sans-serif; }
+.logo { font: 800 50px "Baloo 2", sans-serif; }
 .logo span { color: var(--coral); }
-.credits { margin: -35px 0 0; font-size: 15px; font-weight: 700; }
+.credits { margin: -25px 0 0; font-size: 15px; font-weight: 700; }
 
 .card {
   padding: 20px;
@@ -159,8 +159,11 @@ h1 em {
 /* ========== 5. LÀM BÀI ========== */
 #view-play .card { margin-bottom: 24px; }
 .avatars { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-.avatar { padding: 6px 10px; font-size: 28px; line-height: 1; background: var(--bg); border-radius: 16px; box-shadow: none; }
-.avatar.on { background: var(--sky); }
+.avatar { padding: 3px; line-height: 0; background: var(--bg); border-radius: 50%; box-shadow: none; }
+.avatar img { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 50%; }
+.avatar.on { background: var(--sky); outline: 4px solid var(--sky); outline-offset: 2px; }
+.avatar-upload { display: grid; place-items: center; width: 62px; height: 62px; padding: 0; font: 800 30px "Baloo 2", sans-serif; border: 3px dashed var(--line); border-radius: 50%; cursor: pointer; }
+.face-img { width: 44px; height: 44px; object-fit: cover; border: 3px solid var(--line); border-radius: 50%; vertical-align: middle; }
 
 .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
 .answer { padding: 16px 10px; font-size: 20px; color: #2D2A4A; background: var(--sky); border-radius: 20px; }
@@ -178,7 +181,7 @@ h1 em {
 .rank { width: 28px; font: 800 22px "Baloo 2", sans-serif; }
 .face { font-size: 28px; }
 
-/* ========== 6. MÀN HÌNH NHỎ & GIẢM CHUYỂN ĐỘNG ========== */
+
 @media (max-width: 760px) {
   .hero, .steps, .qs { grid-template-columns: 1fr; }
   .duo { order: -1; }
@@ -220,3 +223,10 @@ h1 em {
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+
+.music {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
+  margin: 40px 0 8px;
+}
+.music-tracks { display: flex; gap: 8px; }
+.music .small.on { color: #fff; background: var(--coral); }
