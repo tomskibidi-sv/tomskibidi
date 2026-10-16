@@ -150,16 +150,71 @@ async function decodeInvite(hash) {
   return { n: name, q };
 }
 
-/* ========== BẢNG ĐIỂM (lưu trong trình duyệt của máy này) ========== */
+/* ========== HIỂN THỊ BẢNG XẾP HẠNG (dùng cho cả trang làm bài và trang bảng xếp hạng) ========== */
+function renderBoard(rows, total) {
+  rows = [...rows].sort((a, b) => b.score - a.score || a.ms - b.ms);
+
+  $("board").innerHTML = rows.map((r, i) => {
+    const score = +r.score || 0;
+    const percent = Math.round((score / total) * 100);
+    return `
+      <li class="card">
+        <span class="rank">${i + 1}</span>
+        <span class="face">${avatarHtml(String(r.av || ""))}</span>
+        <div class="board-item-details">
+          <div class="board-meta">
+            <b>${escapeHtml(r.nick)}</b>
+            <span>${score}/${total} điểm (${formatTime(+r.ms || 0)})</span>
+          </div>
+          <div class="rank-progress-container">
+            <div class="rank-progress-bar" style="width: ${percent}%;"></div>
+          </div>
+        </div>
+      </li>`;
+  }).join("");
+
+  $("board-msg").textContent = rows.length ? "" : "Chưa có ai làm bài. Bạn sẽ là người đầu tiên!";
+}
+
+/* ========== BẢNG ĐIỂM ==========
+   Điền SCORE_DB_URL (Firebase Realtime Database) -> bảng điểm DÙNG CHUNG cho mọi người.
+   Để trống -> điểm chỉ lưu trong trình duyệt của máy này (bạn bè sẽ không thấy nhau).
+   Ví dụ: "https://ten-du-an-default-rtdb.asia-southeast1.firebasedatabase.app" */
+const SCORE_DB_URL = "https://storage-f6dbf-default-rtdb.asia-southeast1.firebasedatabase.app";
+
 const scoreStore = {
-  list(quizId) {
+  base: SCORE_DB_URL.replace(/\/+$/, ""),
+
+  localList(quizId) {
     try { return Object.values(JSON.parse(localStorage.getItem("scores:" + quizId)) || {}); }
     catch (err) { return []; }
   },
-  save(quizId, record) {
+  localSave(quizId, record) {
     const all = {};
-    for (const r of this.list(quizId)) all[r.nick] = r;
+    for (const r of this.localList(quizId)) all[r.nick] = r;
     if (!all[record.nick] || isBetter(record, all[record.nick])) all[record.nick] = record;
     try { localStorage.setItem("scores:" + quizId, JSON.stringify(all)); } catch (err) { /* bỏ qua */ }
+  },
+
+  async list(quizId) {
+    if (this.base) {
+      try {
+        const res = await fetch(`${this.base}/scores/${quizId}.json`);
+        if (res.ok) return Object.values((await res.json()) || {}).filter((r) => r && r.nick);
+      } catch (err) { /* dùng bảng trên máy */ }
+    }
+    return this.localList(quizId);
+  },
+
+  async save(quizId, record) {
+    if (this.base) {
+      try {
+        const url = `${this.base}/scores/${quizId}/${hashText(record.nick.toLowerCase())}.json`;
+        const old = await (await fetch(url)).json();
+        if (!old || isBetter(record, old)) await fetch(url, { method: "PUT", body: JSON.stringify(record) });
+        return;
+      } catch (err) { /* dùng bảng trên máy */ }
+    }
+    this.localSave(quizId, record);
   },
 };
